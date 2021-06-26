@@ -21,30 +21,42 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class NotesPage extends StatelessWidget {
+class NotesPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  State<StatefulWidget> createState() => _NotesPageState();
+}
+
+class _NotesPageState extends State<NotesPage> {
+  List<String> _notes = [for (var i in List<int>.generate(20, (i) => i + 1)) '$i'];
+
+  void addNewNote(String name) {
+    setState(() {
+      _notes.add(name);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: NoteList(),
+            child: NoteList(_notes),
           ),
           Container(
             height: 50,
-            child: BottomBar(),
+            child: BottomBar(addNewNote),
           )
         ],
       ),
     );
-  }
 }
 
 class BottomBarButton extends StatelessWidget {
-  BottomBarButton({Key? key, required this.icon}) : super(key: key);
+  BottomBarButton({Key? key, required this.icon, this.onPressed}) : super(key: key);
 
+  final void Function()? onPressed;
   final IconData icon;
 
   @override
@@ -52,7 +64,7 @@ class BottomBarButton extends StatelessWidget {
     width: 32,
     child: IconButton(
         padding: EdgeInsets.zero,
-        onPressed: () {},
+        onPressed: onPressed,
         icon: Icon(
           this.icon,
           color: Colors.white,
@@ -62,6 +74,10 @@ class BottomBarButton extends StatelessWidget {
 }
 
 class NoteInputBox extends StatelessWidget {
+  final void Function(String text)? onChanged;
+
+  const NoteInputBox({Key? key, this.onChanged}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Material(
     elevation: 4,
@@ -73,6 +89,7 @@ class NoteInputBox extends StatelessWidget {
         height: 42,
         child: Center(
           child: TextField(
+            onChanged: onChanged,
             maxLines: 1,
             style: GoogleFonts.poppins(
               color: Colors.white,
@@ -90,7 +107,24 @@ class NoteInputBox extends StatelessWidget {
   );
 }
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends StatefulWidget {
+  final void Function(String text)? onNewNote;
+
+  BottomBar(this.onNewNote);
+
+  @override
+  State createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  String? _newNoteContent;
+
+  void changeNewNote(String newContent) {
+    setState(() {
+      _newNoteContent = newContent;
+    });
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
     padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
@@ -100,17 +134,23 @@ class BottomBar extends StatelessWidget {
         Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: NoteInputBox(),
+              child: NoteInputBox(onChanged: changeNewNote),
             )
         ),
-        BottomBarButton(icon: Icons.send),
+        BottomBarButton(
+            icon: Icons.send,
+            onPressed: () {
+              widget.onNewNote!(_newNoteContent!);
+            }),
       ],
     ),
   );
 }
 
 class NoteList extends StatelessWidget {
-  final list = [for (var i in [1, 2, 3]) Note('$i')];
+  final List<String> notes;
+
+  NoteList(this.notes);
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +161,7 @@ class NoteList extends StatelessWidget {
           bottomRight: Radius.circular(20)
       ),
       child: ListView(
-        children: list,
+        children: [for (var note in notes) Note(note)],
       ),
     );
   }
