@@ -148,23 +148,40 @@ class _BottomBarState extends State<BottomBar> {
 }
 
 class NoteList extends StatelessWidget {
-  final List<String> notes;
+  final List<String> _notes;
+  final ScrollController _scrollController = ScrollController();
 
-  NoteList(this.notes);
+  NoteList(this._notes);
 
+  Widget buildRow(BuildContext ctx, int index) => Note(_notes[index]);
+
+  void scrollToBottom() {
+    _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeOut
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) { scrollToBottom(); });
+
     return Material(
       color: Theme.of(context).backgroundColor,
       borderRadius: new BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20)
       ),
-      child: ListView(
-        children: [for (var note in notes) Note(note)],
-      ),
+      child: ListView.builder(
+          itemBuilder: buildRow,
+          itemCount: _notes.length,
+          controller: _scrollController,
+      )
     );
   }
+
+
 }
 
 class Note extends StatelessWidget {
