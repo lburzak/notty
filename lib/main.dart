@@ -27,7 +27,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  List<String> _notes = [for (var i in List<int>.generate(20, (i) => i + 1)) '$i'];
+  List<String> _notes = [];
 
   void addNewNote(String name) {
     setState(() {
