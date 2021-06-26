@@ -75,8 +75,9 @@ class BottomBarButton extends StatelessWidget {
 
 class NoteInputBox extends StatelessWidget {
   final void Function(String text)? onChanged;
+  final void Function(String text)? onSubmitted;
 
-  const NoteInputBox({Key? key, this.onChanged}) : super(key: key);
+  const NoteInputBox({Key? key, this.onChanged, this.onSubmitted}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Material(
@@ -90,6 +91,7 @@ class NoteInputBox extends StatelessWidget {
         child: Center(
           child: TextField(
             onChanged: onChanged,
+            onSubmitted: onSubmitted,
             maxLines: 1,
             style: GoogleFonts.poppins(
               color: Colors.white,
@@ -134,7 +136,9 @@ class _BottomBarState extends State<BottomBar> {
         Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: NoteInputBox(onChanged: changeNewNote),
+              child: NoteInputBox(
+                  onChanged: changeNewNote,
+                  onSubmitted: widget.onNewNote),
             )
         ),
         BottomBarButton(
