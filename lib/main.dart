@@ -155,7 +155,8 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => AnimatedContainer(
+    duration: Duration(milliseconds: 100),
     height: _isExpanded ? 200 : 50,
     child: Padding(
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
