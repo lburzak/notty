@@ -52,10 +52,7 @@ class _NotesPageState extends State<NotesPage> {
           Expanded(
             child: NoteList(_notes),
           ),
-          Container(
-            height: 50,
-            child: BottomBar(addNewNote),
-          )
+          BottomBar(addNewNote),
         ],
       ),
     );
@@ -135,6 +132,7 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   String _newNoteContent = "";
+  bool _isExpanded = false;
 
   void _changeNewNote(String newContent) {
     setState(() {
@@ -151,27 +149,30 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-    child: Row(
-      children: [
-        BottomBarButton(icon: Icons.arrow_upward),
-        Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: NoteInputBox(
-                  text: _newNoteContent,
-                  onChanged: _changeNewNote,
-                  onSubmitted: _submitNewNote),
-            )
+  Widget build(BuildContext context) => Container(
+    height: 50,
+    child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+        child: Row(
+          children: [
+            BottomBarButton(icon: Icons.arrow_upward),
+            Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: NoteInputBox(
+                      text: _newNoteContent,
+                      onChanged: _changeNewNote,
+                      onSubmitted: _submitNewNote),
+                )
+            ),
+            BottomBarButton(
+                icon: Icons.send,
+                onPressed: () {
+                  _submitNewNote(_newNoteContent);
+                }),
+          ],
         ),
-        BottomBarButton(
-            icon: Icons.send,
-            onPressed: () {
-              _submitNewNote(_newNoteContent);
-            }),
-      ],
-    ),
+    )
   );
 }
 
