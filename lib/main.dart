@@ -161,6 +161,7 @@ class _BottomBarState extends State<BottomBar> {
     child: Padding(
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BottomBarButton(
               icon: Icons.arrow_upward,
