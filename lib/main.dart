@@ -38,7 +38,8 @@ class _NotesPageState extends State<NotesPage> {
 
   void addNewNote(String name) {
     setState(() {
-      _notes.add(name);
+      if (name.isNotEmpty)
+        _notes.add(name);
     });
   }
 
