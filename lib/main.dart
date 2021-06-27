@@ -148,14 +148,23 @@ class _BottomBarState extends State<BottomBar> {
     });
   }
 
+  void _toggleExpanded() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
   @override
   Widget build(BuildContext context) => Container(
-    height: 50,
+    height: _isExpanded ? 200 : 50,
     child: Padding(
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         child: Row(
           children: [
-            BottomBarButton(icon: Icons.arrow_upward),
+            BottomBarButton(
+              icon: Icons.arrow_upward,
+              onPressed: _toggleExpanded
+            ),
             Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
