@@ -164,7 +164,7 @@ class _BottomBarState extends State<BottomBar> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BottomBarButton(
-              icon: Icons.arrow_upward,
+              icon: _isExpanded ? Icons.arrow_downward : Icons.arrow_upward,
               onPressed: _toggleExpanded
             ),
             Expanded(
