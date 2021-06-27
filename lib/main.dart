@@ -83,8 +83,9 @@ class NoteInputBox extends StatelessWidget {
   final void Function(String text)? onSubmitted;
   final TextEditingController inputController = TextEditingController();
   final String text;
+  final bool multiline;
 
-  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = ""}) : super(key: key);
+  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = "", this.multiline = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class NoteInputBox extends StatelessWidget {
           controller: inputController,
           onChanged: onChanged,
           onSubmitted: onSubmitted,
-          maxLines: 1,
+          maxLines: multiline ? 10 : 1,
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(0.0),
@@ -167,6 +168,7 @@ class _BottomBarState extends State<BottomBar> {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: NoteInputBox(
                       text: _newNoteContent,
+                      multiline: _isExpanded,
                       onChanged: _changeNewNote,
                       onSubmitted: _submitNewNote),
                 )
