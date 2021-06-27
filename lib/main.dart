@@ -97,7 +97,7 @@ class NoteInputBox extends StatelessWidget {
     return Material(
       elevation: 4,
       color: Theme.of(context).accentColor,
-      borderRadius: BorderRadius.circular(32),
+      borderRadius: BorderRadius.circular(16),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: TextField(
