@@ -98,22 +98,17 @@ class NoteInputBox extends StatelessWidget {
       color: Theme.of(context).accentColor,
       borderRadius: BorderRadius.circular(32),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-          height: 42,
-          child: Center(
-            child: TextField(
-              controller: inputController,
-              onChanged: onChanged,
-              onSubmitted: onSubmitted,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.bodyText2,
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  isDense: true,
-                  border: InputBorder.none
-              ),
-            ),
+        padding: const EdgeInsets.all(12),
+        child: TextField(
+          controller: inputController,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
+          maxLines: 1,
+          style: Theme.of(context).textTheme.bodyText2,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(0.0),
+              isDense: true,
+              border: InputBorder.none
           ),
         ),
       ),
@@ -161,7 +156,7 @@ class _BottomBarState extends State<BottomBar> {
     child: Padding(
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BottomBarButton(
               icon: _isExpanded ? Icons.arrow_downward : Icons.arrow_upward,
