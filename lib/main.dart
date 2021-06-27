@@ -159,9 +159,12 @@ class _BottomBarState extends State<BottomBar> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BottomBarButton(
-              icon: _isExpanded ? Icons.arrow_downward : Icons.arrow_upward,
-              onPressed: _toggleExpanded
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomBarButton(
+                icon: _isExpanded ? Icons.arrow_downward : Icons.arrow_upward,
+                onPressed: _toggleExpanded
+              ),
             ),
             Expanded(
                 child: Padding(
@@ -173,11 +176,14 @@ class _BottomBarState extends State<BottomBar> {
                       onSubmitted: _submitNewNote),
                 )
             ),
-            BottomBarButton(
-                icon: Icons.send,
-                onPressed: () {
-                  _submitNewNote(_newNoteContent);
-                }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomBarButton(
+                  icon: Icons.send,
+                  onPressed: () {
+                    _submitNewNote(_newNoteContent);
+                  }),
+            ),
           ],
         ),
     )
