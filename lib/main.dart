@@ -14,7 +14,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Color.fromARGB(0xff, 0x00, 0x65, 0xdb),
           backgroundColor: Color.fromARGB(0xff, 0x00, 0x44, 0x94),
-          accentColor: Color.fromARGB(0xff, 0x19, 0x74, 0xdf)
+          accentColor: Color.fromARGB(0xff, 0x19, 0x74, 0xdf),
+          textTheme: Typography.blackMountainView.copyWith(
+            bodyText2: TextStyle(
+              fontSize: 14.0, color: Colors.white
+            )
+          ).apply(
+            fontFamily: GoogleFonts.poppins().fontFamily,
+          )
         ),
         debugShowCheckedModeBanner: false
     );
@@ -76,37 +83,44 @@ class BottomBarButton extends StatelessWidget {
 class NoteInputBox extends StatelessWidget {
   final void Function(String text)? onChanged;
   final void Function(String text)? onSubmitted;
+  final TextEditingController inputController = TextEditingController();
+  final String text;
 
-  const NoteInputBox({Key? key, this.onChanged, this.onSubmitted}) : super(key: key);
+  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = ""}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Material(
-    elevation: 4,
-    color: Theme.of(context).accentColor,
-    borderRadius: BorderRadius.circular(32),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Container(
-        height: 42,
-        child: Center(
-          child: TextField(
-            onChanged: onChanged,
-            onSubmitted: onSubmitted,
-            maxLines: 1,
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 14,
-            ),
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(0.0),
-                isDense: true,
-                border: InputBorder.none
+  Widget build(BuildContext context) {
+    inputController.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length)
+    );
+
+    return Material(
+      elevation: 4,
+      color: Theme.of(context).accentColor,
+      borderRadius: BorderRadius.circular(32),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          height: 42,
+          child: Center(
+            child: TextField(
+              controller: inputController,
+              onChanged: onChanged,
+              onSubmitted: onSubmitted,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.bodyText2,
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(0.0),
+                  isDense: true,
+                  border: InputBorder.none
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class BottomBar extends StatefulWidget {
@@ -119,11 +133,19 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  String? _newNoteContent;
+  String _newNoteContent = "";
 
-  void changeNewNote(String newContent) {
+  void _changeNewNote(String newContent) {
     setState(() {
       _newNoteContent = newContent;
+    });
+  }
+  
+  void _submitNewNote(String content) {
+    widget.onNewNote!(content);
+
+    setState(() {
+      _newNoteContent = "";
     });
   }
 
@@ -137,14 +159,15 @@ class _BottomBarState extends State<BottomBar> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: NoteInputBox(
-                  onChanged: changeNewNote,
-                  onSubmitted: widget.onNewNote),
+                  text: _newNoteContent,
+                  onChanged: _changeNewNote,
+                  onSubmitted: _submitNewNote),
             )
         ),
         BottomBarButton(
             icon: Icons.send,
             onPressed: () {
-              widget.onNewNote!(_newNoteContent!);
+              _submitNewNote(_newNoteContent);
             }),
       ],
     ),
@@ -197,7 +220,7 @@ class Note extends StatelessWidget {
   Widget build(BuildContext context) => Card(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(this.content),
+      child: Text(this.content, style: Theme.of(context).textTheme.bodyText1,),
     ),
   );
 }
