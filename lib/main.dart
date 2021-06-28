@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -102,19 +103,14 @@ class BottomBarButton extends StatelessWidget {
 class NoteInputBox extends StatelessWidget {
   final void Function(String text)? onChanged;
   final void Function(String text)? onSubmitted;
-  final TextEditingController inputController = TextEditingController();
+  final TextEditingController? controller;
   final String text;
   final bool multiline;
 
-  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = "", this.multiline = false}) : super(key: key);
+  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = "", this.multiline = false, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    inputController.value = TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length)
-    );
-
     return Material(
       elevation: 4,
       color: Theme.of(context).accentColor,
@@ -122,7 +118,7 @@ class NoteInputBox extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: TextField(
-          controller: inputController,
+          controller: controller,
           onChanged: onChanged,
           onSubmitted: onSubmitted,
           maxLines: multiline ? 10 : 1,
@@ -148,20 +144,32 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  String _newNoteContent = "";
   bool _isExpanded = false;
+  final TextEditingController _inputController = TextEditingController();
 
-  void _changeNewNote(String newContent) {
-    setState(() {
-      _newNoteContent = newContent;
+  @override
+  void initState() {
+    super.initState();
+
+    _inputController.addListener(() {
+      _inputController.value = _inputController.value.copyWith(
+          text: _inputController.text,
+          selection: TextSelection.collapsed(offset: _inputController.text.length)
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
   }
   
   void _submitNewNote(String content) {
     widget.onNewNote!(content);
 
     setState(() {
-      _newNoteContent = "";
+      _inputController.clear();
     });
   }
 
@@ -191,9 +199,8 @@ class _BottomBarState extends State<BottomBar> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: NoteInputBox(
-                      text: _newNoteContent,
+                      controller: _inputController,
                       multiline: _isExpanded,
-                      onChanged: _changeNewNote,
                       onSubmitted: _submitNewNote),
                 )
             ),
@@ -202,7 +209,7 @@ class _BottomBarState extends State<BottomBar> {
               child: BottomBarButton(
                   icon: Icons.send,
                   onPressed: () {
-                    _submitNewNote(_newNoteContent);
+                    _submitNewNote(_inputController.text);
                   }),
             ),
           ],
