@@ -217,10 +217,13 @@ class NoteList extends StatelessWidget {
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20)
       ),
-      child: ListView.builder(
-          itemBuilder: buildRow,
-          itemCount: _notes.length,
-          controller: _scrollController,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+            itemBuilder: buildRow,
+            itemCount: _notes.length,
+            controller: _scrollController,
+        ),
       )
     );
   }
@@ -236,8 +239,11 @@ class Note extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(this.content, style: Theme.of(context).textTheme.bodyText1,),
+      padding: const EdgeInsets.all(14),
+      child: Text(
+          this.content,
+          style: Theme.of(context).textTheme.bodyText1,
+      ),
     ),
   );
 }
