@@ -211,6 +211,7 @@ class NoteList extends StatelessWidget {
     WidgetsBinding.instance!.addPostFrameCallback((_) { scrollToBottom(); });
 
     return Material(
+      clipBehavior: Clip.hardEdge,
       color: Theme.of(context).backgroundColor,
       borderRadius: new BorderRadius.only(
           bottomLeft: Radius.circular(20),
