@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,12 +53,14 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  List<String> _notes = [];
+  List<Note> _notes = [];
 
   void addNewNote(String name) {
     setState(() {
       if (name.isNotEmpty)
-        _notes.add(name);
+        _notes.add(
+          Note(name, DateTime.now())
+        );
     });
   }
 
@@ -211,12 +212,14 @@ class _BottomBarState extends State<BottomBar> {
 }
 
 class NoteList extends StatelessWidget {
-  final List<String> _notes;
+  final List<Note> notes;
   final ScrollController _scrollController = ScrollController();
 
-  NoteList(this._notes);
+  NoteList(this.notes);
 
-  Widget buildRow(BuildContext ctx, int index) => Note(_notes[index], DateTime.now());
+  Widget buildRow(BuildContext ctx, int index) => NoteCard(
+    note: notes[index]
+  );
 
   void scrollToBottom() {
     _scrollController.animateTo(
@@ -241,21 +244,18 @@ class NoteList extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: ListView.builder(
             itemBuilder: buildRow,
-            itemCount: _notes.length,
+            itemCount: notes.length,
             controller: _scrollController,
         ),
       )
     );
   }
-
-
 }
 
-class Note extends StatelessWidget {
-  final String content;
-  final DateTime date;
+class NoteCard extends StatelessWidget {
+  final Note note;
 
-  Note(this.content, this.date);
+  const NoteCard({Key? key, required this.note}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -266,19 +266,49 @@ class Note extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              this.content,
+              note.content,
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: Text(
-              DateFormat.yMMMEd(Localizations.localeOf(context).toLanguageTag()).format(date),
-              style: Theme.of(context).textTheme.bodyText1,
+            child: DateTimeField(
+                dateTime: note.dateCreated
             ),
           )
         ],
       ),
     ),
   );
+}
+
+class DateTimeField extends StatelessWidget {
+  final DateTime dateTime;
+
+  const DateTimeField({Key? key, required this.dateTime}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String languageTag = Localizations.localeOf(context).toLanguageTag();
+
+    String time = DateFormat.Hms(languageTag).format(dateTime);
+    String date = DateFormat.yMd(languageTag).format(dateTime);
+
+    return Text(
+      date + ' ' + time,
+      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        fontWeight: FontWeight.bold,
+        fontSize: 11,
+        color: Color.fromARGB(255, 97, 97, 97)
+      ),
+    );
+  }
+}
+
+@immutable
+class Note {
+  final String content;
+  final DateTime dateCreated;
+
+  Note(this.content, this.dateCreated);
 }
