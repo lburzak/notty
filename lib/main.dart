@@ -1,15 +1,35 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _localeInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('pl_PL').then((value) => {
+      setState(() {
+        _localeInitialized = true;
+      })
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return _localeInitialized ? MaterialApp(
         home: new NotesPage(),
         theme: ThemeData(
           primaryColor: Color.fromARGB(0xff, 0x00, 0x65, 0xdb),
@@ -24,7 +44,7 @@ class MyApp extends StatelessWidget {
           )
         ),
         debugShowCheckedModeBanner: false
-    );
+    ) : CircularProgressIndicator();
   }
 }
 
@@ -196,7 +216,7 @@ class NoteList extends StatelessWidget {
 
   NoteList(this._notes);
 
-  Widget buildRow(BuildContext ctx, int index) => Note(_notes[index]);
+  Widget buildRow(BuildContext ctx, int index) => Note(_notes[index], DateTime.now());
 
   void scrollToBottom() {
     _scrollController.animateTo(
@@ -233,16 +253,31 @@ class NoteList extends StatelessWidget {
 
 class Note extends StatelessWidget {
   final String content;
+  final DateTime date;
 
-  Note(this.content);
+  Note(this.content, this.date);
 
   @override
   Widget build(BuildContext context) => Card(
     child: Padding(
       padding: const EdgeInsets.all(14),
-      child: Text(
-          this.content,
-          style: Theme.of(context).textTheme.bodyText1,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              this.content,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Text(
+              DateFormat.yMMMEd(Localizations.localeOf(context).toLanguageTag()).format(date),
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          )
+        ],
       ),
     ),
   );
