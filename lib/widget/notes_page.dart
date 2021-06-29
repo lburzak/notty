@@ -17,7 +17,7 @@ class _NotesPageState extends State<NotesPage> {
     setState(() {
       if (name.isNotEmpty)
         _notes.add(
-            Note(name, DateTime.now())
+            Note(name, dateCreated: DateTime.now())
         );
     });
   }
