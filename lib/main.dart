@@ -266,14 +266,17 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
     child: Padding(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(6),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              note.content,
-              style: Theme.of(context).textTheme.bodyText1,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                note.content,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             ),
           ),
           Align(
