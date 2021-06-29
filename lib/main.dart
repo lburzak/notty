@@ -122,6 +122,10 @@ class NoteInputBox extends StatelessWidget {
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(8.0),
             isDense: true,
+            hintText: 'Your note...',
+            hintStyle: Theme.of(context).textTheme.bodyText2!.apply(
+              color: Theme.of(context).textTheme.bodyText2!.color!.withAlpha(85)
+            ),
             border: InputBorder.none
         ),
       ),
