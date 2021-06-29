@@ -103,10 +103,9 @@ class NoteInputBox extends StatelessWidget {
   final void Function(String text)? onChanged;
   final void Function(String text)? onSubmitted;
   final TextEditingController? controller;
-  final String text;
   final bool multiline;
 
-  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.text = "", this.multiline = false, this.controller}) : super(key: key);
+  NoteInputBox({Key? key, this.onChanged, this.onSubmitted, this.multiline = false, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
