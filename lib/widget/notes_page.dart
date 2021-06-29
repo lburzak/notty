@@ -1,8 +1,8 @@
+import 'package:app/viewmodel/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'bottom_bar.dart';
-import '../model/note.dart';
 import 'note_list.dart';
 
 class NotesPage extends StatefulWidget {
@@ -11,16 +11,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  List<Note> _notes = [];
-
-  void addNewNote(String name) {
-    setState(() {
-      if (name.isNotEmpty)
-        _notes.add(
-            Note(name, dateCreated: DateTime.now())
-        );
-    });
-  }
+  final _viewModel = NotesViewModel();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -29,9 +20,9 @@ class _NotesPageState extends State<NotesPage> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
-          child: NoteList(_notes),
+          child: NoteList(_viewModel.notes),
         ),
-        BottomBar(addNewNote),
+        BottomBar(_viewModel.addNewNote),
       ],
     ),
   );
