@@ -113,19 +113,16 @@ class NoteInputBox extends StatelessWidget {
       elevation: 4,
       color: Theme.of(context).accentColor,
       borderRadius: BorderRadius.circular(16),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: TextField(
-          controller: controller,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-          maxLines: multiline ? 10 : 1,
-          style: Theme.of(context).textTheme.bodyText2,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(0.0),
-              isDense: true,
-              border: InputBorder.none
-          ),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        maxLines: multiline ? 10 : 1,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(8.0),
+            isDense: true,
+            border: InputBorder.none
         ),
       ),
     );
