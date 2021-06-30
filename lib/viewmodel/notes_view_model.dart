@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Notty/models/note.dart';
+import 'package:notty/models/note.dart';
 import 'package:objectbox/objectbox.dart';
 
 class NotesViewModel {
