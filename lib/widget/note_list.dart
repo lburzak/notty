@@ -60,15 +60,16 @@ class DateTimeField extends StatelessWidget {
   }
 }
 
-class NoteList extends StatelessWidget {
-  final List<Note> notes;
+class NotesList extends StatelessWidget {
+  final Stream<List<Note>> notes;
   final ScrollController _scrollController = ScrollController();
 
-  NoteList(this.notes);
+  NotesList(this.notes);
 
-  Widget buildRow(BuildContext ctx, int index) => NoteCard(
-      note: notes[index]
-  );
+  Widget Function (BuildContext ctx, int index) buildRow(List<Note> notes) =>
+          (BuildContext ctx, int index) => NoteCard(
+              note: notes[index]
+          );
 
   void scrollToBottom() {
     _scrollController.animateTo(
@@ -91,10 +92,15 @@ class NoteList extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            itemBuilder: buildRow,
-            itemCount: notes.length,
-            controller: _scrollController,
+          child: StreamBuilder<List<Note>>(
+            stream: notes,
+            builder: (context, snapshot) {
+              return ListView.builder(
+                itemBuilder: buildRow(snapshot.data ?? []),
+                itemCount: snapshot.hasData ? snapshot.data!.length : 0,
+                controller: _scrollController,
+              );
+            }
           ),
         )
     );

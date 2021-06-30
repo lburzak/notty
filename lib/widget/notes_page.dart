@@ -20,7 +20,7 @@ class _NotesPageState extends State<NotesPage> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
-          child: NoteList(_viewModel.notes),
+          child: NotesList(_viewModel.notes),
         ),
         BottomBar(_viewModel.addNewNote),
       ],
