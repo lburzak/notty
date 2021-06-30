@@ -85,7 +85,7 @@ class NotesList extends StatelessWidget {
 
     return Material(
         clipBehavior: Clip.hardEdge,
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: new BorderRadius.only(
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20)

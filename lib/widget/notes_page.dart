@@ -45,7 +45,7 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Theme.of(context).primaryColor,
+    backgroundColor: Theme.of(context).colorScheme.primary,
     body: ready ? Column(
       mainAxisSize: MainAxisSize.max,
       children: [

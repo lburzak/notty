@@ -28,9 +28,11 @@ class _AppState extends State<App> {
     return _localeInitialized ? MaterialApp(
         home: NotesPage(),
         theme: ThemeData(
-            primaryColor: Color.fromARGB(0xff, 0x00, 0x65, 0xdb),
-            backgroundColor: Color.fromARGB(0xff, 0x00, 0x44, 0x94),
-            accentColor: Color.fromARGB(0xff, 0x19, 0x74, 0xdf),
+            colorScheme: ColorScheme.light(
+              primary: Color.fromARGB(0xff, 0x00, 0x65, 0xdb),
+              background: Color.fromARGB(0xff, 0x00, 0x44, 0x94),
+              secondary: Color.fromARGB(0xff, 0x19, 0x74, 0xdf)
+            ),
             textTheme: Typography.blackMountainView.copyWith(
                 bodyText2: TextStyle(
                     fontSize: 14.0, color: Colors.white

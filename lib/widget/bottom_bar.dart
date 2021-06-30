@@ -117,7 +117,7 @@ class NoteInputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 4,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).colorScheme.secondary,
       borderRadius: BorderRadius.circular(16),
       child: TextField(
         controller: controller,
