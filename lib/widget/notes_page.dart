@@ -1,9 +1,9 @@
-import 'package:app/objectbox.g.dart';
-import 'package:app/viewmodel/notes_view_model.dart';
+import 'package:Notty/viewmodel/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../objectbox.g.dart';
 import 'bottom_bar.dart';
 import 'note_list.dart';
 
