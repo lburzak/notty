@@ -1,12 +1,17 @@
 import 'dart:async';
 
-import 'package:app/model/note.dart';
+import 'package:app/models/note.dart';
+import 'package:objectbox/objectbox.dart';
 
 class NotesViewModel {
-  List<Note> _notes = [];
-  StreamController<List<Note>> _notesStreamController = StreamController(sync: true);
+  final Box<Note> _box;
+  late final Stream<List<Note>> notes;
 
-  Stream<List<Note>> get notes => _notesStreamController.stream;
+  NotesViewModel(Store store) : _box = Box(store) {
+    notes = _box.query()
+        .watch(triggerImmediately: true)
+        .map((query) => query.find());
+  }
 
   void addNewNote(String content) {
     if (content.isEmpty)
@@ -14,7 +19,6 @@ class NotesViewModel {
     
     final note = Note(content, dateCreated: DateTime.now());
 
-    _notes.add(note);
-    _notesStreamController.add(_notes);
+    _box.put(note);
   }
 }

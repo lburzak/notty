@@ -1,6 +1,8 @@
+import 'package:app/objectbox.g.dart';
 import 'package:app/viewmodel/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'bottom_bar.dart';
 import 'note_list.dart';
@@ -11,12 +13,40 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  final _viewModel = NotesViewModel();
+  late final _store;
+  late final _viewModel;
+
+  bool ready = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _openStore().then((store) {
+      _store = store;
+      _viewModel = NotesViewModel(store);
+
+      setState(() {
+        ready = true;
+      });
+    });
+  }
+
+  Future<Store> _openStore() async {
+    final dir = await getApplicationDocumentsDirectory();
+    return Store(getObjectBoxModel(), directory: dir.path + '/objectbox');
+  }
+
+  @override
+  void dispose() {
+    _store.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: Theme.of(context).primaryColor,
-    body: Column(
+    body: ready ? Column(
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
@@ -24,6 +54,6 @@ class _NotesPageState extends State<NotesPage> {
         ),
         BottomBar(_viewModel.addNewNote),
       ],
-    ),
+    ) : CircularProgressIndicator(),
   );
 }
