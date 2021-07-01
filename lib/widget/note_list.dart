@@ -10,17 +10,20 @@ class NoteCard extends StatelessWidget {
   final Note note;
   final bool selected;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   const NoteCard({
     Key? key,
     required this.note,
     this.selected = false,
     this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(
@@ -88,23 +91,27 @@ class NotesList extends StatefulWidget {
 class _NotesListState extends State<NotesList> {
   final ScrollController _scrollController = ScrollController();
   final SelectionController _selectionController = SelectionController();
-  bool _selectionMode = true;
+  bool _selectionMode = false;
 
   Widget Function(BuildContext ctx, int index) buildRow(List<Note> notes) =>
-      (BuildContext ctx, int index) =>
-        Consumer<SelectionController>(
-          builder: (context, selection, child) => NoteCard(
-            note: notes[index],
-            selected: selection.isSelected(index),
-            onTap: () {
-              setState(() {
+      (BuildContext ctx, int index) => Consumer<SelectionController>(
+            builder: (context, selection, child) => NoteCard(
+              note: notes[index],
+              selected: selection.isSelected(index),
+              onTap: () {
                 if (_selectionMode) {
                   selection.toggle(index);
                 }
-              });
-            },
-          ),
-        );
+              },
+              onLongPress: () {
+                setState(() {
+                  if (!_selectionMode) _selectionMode = true;
+                });
+                
+                selection.select(index);
+              },
+            ),
+          );
 
   void scrollToBottom() {
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
@@ -126,15 +133,14 @@ class _NotesListState extends State<NotesList> {
           padding: const EdgeInsets.all(10),
           child: StreamBuilder<List<Note>>(
               stream: widget.notes,
-              builder: (context, snapshot) =>
-                    ChangeNotifierProvider(
-                      create: (context) => _selectionController,
-                      child: ListView.builder(
-                        itemBuilder: buildRow(snapshot.data ?? []),
-                        itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                        controller: _scrollController,
-                      ),
-                    )),
+              builder: (context, snapshot) => ChangeNotifierProvider(
+                    create: (context) => _selectionController,
+                    child: ListView.builder(
+                      itemBuilder: buildRow(snapshot.data ?? []),
+                      itemCount: snapshot.hasData ? snapshot.data!.length : 0,
+                      controller: _scrollController,
+                    ),
+                  )),
         ));
   }
 }
