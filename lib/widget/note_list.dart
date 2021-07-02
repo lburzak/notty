@@ -132,7 +132,15 @@ class _NotesListState extends State<NotesList> {
             bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
         child: Column(
           children: [
-            ActionBar(),
+            ActionBar(
+              visible: _selectionMode,
+              onCancel: () {
+                _selectionController.unselectAll();
+                setState(() {
+                  _selectionMode = false;
+                });
+              },
+            ),
             Expanded(
               child: StreamBuilder<List<Note>>(
                   stream: widget.notes,
