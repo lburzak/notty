@@ -134,20 +134,18 @@ class _NotesListState extends State<NotesList> {
           children: [
             ActionBar(),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: StreamBuilder<List<Note>>(
-                    stream: widget.notes,
-                    builder: (context, snapshot) => ChangeNotifierProvider(
-                          create: (context) => _selectionController,
-                          child: ListView.builder(
-                            itemBuilder: buildRow(snapshot.data ?? []),
-                            itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                            controller: _scrollController,
-                          ),
-                        )
-                    ),
-              ),
+              child: StreamBuilder<List<Note>>(
+                  stream: widget.notes,
+                  builder: (context, snapshot) => ChangeNotifierProvider(
+                        create: (context) => _selectionController,
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(8.0),
+                          itemBuilder: buildRow(snapshot.data ?? []),
+                          itemCount: snapshot.hasData ? snapshot.data!.length : 0,
+                          controller: _scrollController,
+                        ),
+                      )
+                  ),
             ),
           ],
         ));
