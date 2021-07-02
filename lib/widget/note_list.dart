@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:notty/controller/selection_controller.dart';
+import 'package:notty/widget/action_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../models/note.dart';
@@ -129,18 +130,26 @@ class _NotesListState extends State<NotesList> {
         color: Theme.of(context).colorScheme.background,
         borderRadius: new BorderRadius.only(
             bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: StreamBuilder<List<Note>>(
-              stream: widget.notes,
-              builder: (context, snapshot) => ChangeNotifierProvider(
-                    create: (context) => _selectionController,
-                    child: ListView.builder(
-                      itemBuilder: buildRow(snapshot.data ?? []),
-                      itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                      controller: _scrollController,
+        child: Column(
+          children: [
+            ActionBar(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: StreamBuilder<List<Note>>(
+                    stream: widget.notes,
+                    builder: (context, snapshot) => ChangeNotifierProvider(
+                          create: (context) => _selectionController,
+                          child: ListView.builder(
+                            itemBuilder: buildRow(snapshot.data ?? []),
+                            itemCount: snapshot.hasData ? snapshot.data!.length : 0,
+                            controller: _scrollController,
+                          ),
+                        )
                     ),
-                  )),
+              ),
+            ),
+          ],
         ));
   }
 }
