@@ -71,7 +71,7 @@ class DateTimeField extends StatelessWidget {
     String date = DateFormat.yMd(languageTag).format(dateTime);
 
     return Text(
-      date + ' ' + time,
+      [date, time].join(' '),
       style: Theme.of(context).textTheme.bodyText1!.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 11,
