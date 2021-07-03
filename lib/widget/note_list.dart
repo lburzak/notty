@@ -154,7 +154,12 @@ class _NotesListState extends State<NotesList> {
                   builder: (context, snapshot) => ChangeNotifierProvider(
                         create: (context) => _selectionController,
                         child: ListView.builder(
-                          padding: EdgeInsets.all(8.0),
+                          padding: _selectionMode ? const EdgeInsets.all(8.0) : EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top + 8.0,
+                              left: 8.0,
+                              right: 8.0,
+                              bottom: 8.0
+                          ),
                           itemBuilder: buildRow(snapshot.data ?? []),
                           itemCount: snapshot.hasData ? snapshot.data!.length : 0,
                           controller: _scrollController,
