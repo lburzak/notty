@@ -82,8 +82,9 @@ class DateTimeField extends StatelessWidget {
 
 class NotesList extends StatefulWidget {
   final Stream<List<Note>> notes;
+  final void Function(Set<int> selectedIndices)? onDeleteNotes;
 
-  NotesList(this.notes);
+  const NotesList({Key? key, required this.notes, this.onDeleteNotes}) : super(key: key);
 
   @override
   State<NotesList> createState() => _NotesListState();
@@ -140,6 +141,7 @@ class _NotesListState extends State<NotesList> {
                   _selectionMode = false;
                 });
               },
+              onAction: () { widget.onDeleteNotes!(_selectionController.selectedIndices); },
             ),
             Expanded(
               child: StreamBuilder<List<Note>>(

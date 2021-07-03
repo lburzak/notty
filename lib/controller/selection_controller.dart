@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class SelectionController extends ChangeNotifier {
   final Set<int> _selectedIndices = {};
 
+  Set<int> get selectedIndices => _selectedIndices;
+
   bool get hasSelection => _selectedIndices.isNotEmpty;
 
   void select(int index) {

@@ -50,7 +50,21 @@ class _NotesPageState extends State<NotesPage> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
-          child: NotesList(_viewModel.notes),
+          child: NotesList(
+              notes: _viewModel.notes,
+              onDeleteNotes: (selectedIndices) {
+                final selectedNotes =
+                    selectedIndices.map((index) =>
+                        _viewModel.noteAt(index)
+                    )
+                    .map((note) => note.id);
+
+                final ids =
+                  List<int>.from(selectedNotes, growable: false);
+
+                _viewModel.deleteManyNotes(ids);
+              },
+          ),
         ),
         BottomBar(_viewModel.addNewNote),
       ],
