@@ -129,10 +129,6 @@ class _NotesListState extends State<NotesList> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      scrollToBottom();
-    });
-
     return Material(
         clipBehavior: Clip.hardEdge,
         color: Theme.of(context).colorScheme.background,
