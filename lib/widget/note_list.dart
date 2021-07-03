@@ -120,6 +120,13 @@ class _NotesListState extends State<NotesList> {
         duration: const Duration(milliseconds: 100), curve: Curves.easeOut);
   }
 
+  void _endSelection() {
+    _selectionController.unselectAll();
+    setState(() {
+      _selectionMode = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -135,13 +142,11 @@ class _NotesListState extends State<NotesList> {
           children: [
             ActionBar(
               visible: _selectionMode,
-              onCancel: () {
-                _selectionController.unselectAll();
-                setState(() {
-                  _selectionMode = false;
-                });
+              onCancel: _endSelection,
+              onAction: () {
+                widget.onDeleteNotes!(_selectionController.selectedIndices);
+                _endSelection();
               },
-              onAction: () { widget.onDeleteNotes!(_selectionController.selectedIndices); },
             ),
             Expanded(
               child: StreamBuilder<List<Note>>(
