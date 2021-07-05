@@ -5,7 +5,25 @@ class SelectionController extends ChangeNotifier {
 
   Set<int> get selectedIndices => _selectedIndices;
 
-  bool get hasSelection => _selectedIndices.isNotEmpty;
+  bool _enabled = false;
+  
+  bool get isEnabled => _enabled;
+
+  void beginSelection(int initialIndex) {
+    if (_enabled)
+      return;
+
+    _enabled = true;
+    select(initialIndex);
+  }
+
+  void endSelection() {
+    if (!_enabled)
+      return;
+
+    _enabled = false;
+    unselectAll();
+  }
 
   void select(int index) {
     _selectedIndices.add(index);

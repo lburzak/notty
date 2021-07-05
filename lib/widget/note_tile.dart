@@ -18,40 +18,36 @@ class NoteTile extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: selected ? Colors.red : Colors.transparent, width: 2),
-              borderRadius: BorderRadius.circular(6)),
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        note.content,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: _DateTimeField(dateTime: note.dateCreated),
-                  )
-                ],
+  Widget build(BuildContext context) => Container(
+    decoration: BoxDecoration(
+        border: Border.all(
+            color: selected ? Colors.red : Colors.transparent, width: 2),
+        borderRadius: BorderRadius.circular(6)),
+    child: Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(6),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  note.content,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
             ),
-          ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _DateTimeField(dateTime: note.dateCreated),
+            )
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _DateTimeField extends StatelessWidget {
