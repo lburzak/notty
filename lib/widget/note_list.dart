@@ -25,12 +25,10 @@ class SelectableItem extends StatelessWidget {
         builder: (context, selection, child) => GestureDetector(
             child: create(controller.isSelected(index)),
             onTap: () {
-              if (controller.isEnabled)
-                controller.toggle(index);
+              if (controller.isEnabled) controller.toggle(index);
             },
             onLongPress: () {
-              if (!controller.isEnabled)
-                controller.beginSelection(index);
+              if (!controller.isEnabled) controller.beginSelection(index);
             }));
   }
 }
@@ -71,27 +69,28 @@ class _NotesListState extends State<NotesList> {
         color: Theme.of(context).colorScheme.background,
         borderRadius: new BorderRadius.only(
             bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-        child: StreamBuilder<List<Note>>(
-            stream: widget.notes,
-            builder: (context, snapshot) => ChangeNotifierProvider(
-                  create: (context) => _selectionController,
-                  child: Consumer<SelectionController>(
-                    builder: (context, selection, child) => Column(
-                      children: [
-                        ActionBar(
-                          visible: selection.isEnabled,
-                          onCancel: selection.endSelection,
-                          onAction: () {
-                            widget.onDeleteNotes!(selection.selectedIndices);
-                            selection.endSelection();
-                          },
-                        ),
-                        Expanded(
+        child: ChangeNotifierProvider(
+          create: (context) => _selectionController,
+          child: Consumer<SelectionController>(
+            builder: (context, selection, child) => Column(
+              children: [
+                ActionBar(
+                  visible: selection.isEnabled,
+                  onCancel: selection.endSelection,
+                  onAction: () {
+                    widget.onDeleteNotes!(selection.selectedIndices);
+                    selection.endSelection();
+                  },
+                ),
+                StreamBuilder<List<Note>>(
+                    stream: widget.notes,
+                    builder: (context, snapshot) => Expanded(
                           child: ListView.builder(
                             padding: _selectionController.isEnabled
                                 ? const EdgeInsets.all(8.0)
                                 : EdgeInsets.only(
-                                    top: MediaQuery.of(context).padding.top + 8.0,
+                                    top: MediaQuery.of(context).padding.top +
+                                        8.0,
                                     left: 8.0,
                                     right: 8.0,
                                     bottom: 8.0),
@@ -100,10 +99,10 @@ class _NotesListState extends State<NotesList> {
                                 snapshot.hasData ? snapshot.data!.length : 0,
                             controller: _scrollController,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )));
+                        )),
+              ],
+            ),
+          ),
+        ));
   }
 }
