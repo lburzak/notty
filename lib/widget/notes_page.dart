@@ -52,7 +52,6 @@ class _NotesPageState extends State<NotesPage> {
         Expanded(
           child: NotesList(
               viewModel: _viewModel,
-              dataEvents: _viewModel.events,
               onDeleteNotes: (selectedIndices) {
                 final selectedNotes =
                     selectedIndices.map(_viewModel.notes.elementAt)

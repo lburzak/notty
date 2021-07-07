@@ -38,13 +38,11 @@ class SelectableItem extends StatelessWidget {
 class NotesList extends StatefulWidget {
   final NotesViewModel viewModel;
   final void Function(Set<int> selectedIndices)? onDeleteNotes;
-  final Stream<DataEvent> dataEvents;
 
   const NotesList(
       {Key? key,
       required this.viewModel,
-      this.onDeleteNotes,
-      required this.dataEvents})
+      this.onDeleteNotes})
       : super(key: key);
 
   @override
