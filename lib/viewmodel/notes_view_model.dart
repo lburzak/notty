@@ -22,18 +22,23 @@ class DataEvent {
 
 class NotesViewModel {
   final Box<Note> _box;
-  List<Note> _cachedNotes = [];
-  late final Stream<List<Note>> notes;
+  
+  List<Note> notes = [];
+  
   final StreamController<DataEvent> _events = StreamController();
 
+  Stream<DataEvent> get events => _events.stream;
+
   NotesViewModel(Store store) : _box = Box(store) {
-    notes = _box.query()
+    notes = _box.query().build().find();
+
+    _box.query()
         .watch(triggerImmediately: true)
         .map((query) => query.find())
         .asBroadcastStream()
         ..listen((newNotes) {
-          final prevNotes = _cachedNotes;
-          _cachedNotes = newNotes;
+          final prevNotes = notes;
+          notes = newNotes;
 
           final newNotesIds = newNotes.map((note) => note.id).toSet();
           final prevNotesIds = prevNotes.map((note) => note.id).toSet();
@@ -45,18 +50,20 @@ class NotesViewModel {
           Set<int> removedNotesIndices = {};
 
           for (var i = 0; i < prevNotes.length; ++i) {
-              if (addedNotesIds.contains(prevNotes[i].id))
-                addedNotesIndices.add(i);
-
               if (removedNotesIds.contains(prevNotes[i].id))
                 removedNotesIndices.add(i);
           }
 
-          if (addedNotesIds.isNotEmpty)
-            _events.add(DataEvent.added(addedNotesIds));
+          for (var i = 0; i < newNotes.length; ++i) {
+              if (addedNotesIds.contains(newNotes[i].id))
+                addedNotesIndices.add(i);
+          }
 
-          if (removedNotesIds.isNotEmpty)
-            _events.add(DataEvent.removed(removedNotesIds));
+          if (addedNotesIndices.isNotEmpty)
+            _events.add(DataEvent.added(addedNotesIndices));
+
+          if (removedNotesIndices.isNotEmpty)
+            _events.add(DataEvent.removed(removedNotesIndices));
         });
   }
 
@@ -72,6 +79,4 @@ class NotesViewModel {
   void deleteManyNotes(List<int> noteIds) {
     _box.removeMany(noteIds);
   }
-
-  Note noteAt(int index) => _cachedNotes[index];
 }

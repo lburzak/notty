@@ -14,7 +14,7 @@ class NotesPage extends StatefulWidget {
 
 class _NotesPageState extends State<NotesPage> {
   late final _store;
-  late final _viewModel;
+  late final NotesViewModel _viewModel;
 
   bool ready = false;
 
@@ -51,12 +51,11 @@ class _NotesPageState extends State<NotesPage> {
       children: [
         Expanded(
           child: NotesList(
-              notes: _viewModel.notes,
+              viewModel: _viewModel,
+              dataEvents: _viewModel.events,
               onDeleteNotes: (selectedIndices) {
                 final selectedNotes =
-                    selectedIndices.map((index) =>
-                        _viewModel.noteAt(index)
-                    )
+                    selectedIndices.map(_viewModel.notes.elementAt)
                     .map((note) => note.id);
 
                 final ids =
