@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:notty/models/note.dart';
+import 'package:notty/model/note.dart';
 import 'package:objectbox/objectbox.dart';
 
 abstract class DataEvent {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:notty/models/note.dart';
+import 'package:notty/model/note.dart';
 
 class NoteTile extends StatelessWidget {
   final Note note;

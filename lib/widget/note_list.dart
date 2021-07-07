@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notty/controller/selection_controller.dart';
-import 'package:notty/models/note.dart';
+import 'package:notty/model/note.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
 import 'package:notty/widget/action_bar.dart';
 import 'package:notty/adapter/animated_list_stream_adapter.dart';
