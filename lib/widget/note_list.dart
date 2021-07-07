@@ -4,6 +4,7 @@ import 'package:notty/controller/selection_controller.dart';
 import 'package:notty/models/note.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
 import 'package:notty/widget/action_bar.dart';
+import 'package:notty/adapter/animated_list_stream_adapter.dart';
 import 'package:provider/provider.dart';
 
 import 'note_tile.dart';
@@ -39,7 +40,11 @@ class NotesList extends StatefulWidget {
   final void Function(Set<int> selectedIndices)? onDeleteNotes;
   final Stream<DataEvent> dataEvents;
 
-  const NotesList({Key? key, required this.viewModel, this.onDeleteNotes, required this.dataEvents})
+  const NotesList(
+      {Key? key,
+      required this.viewModel,
+      this.onDeleteNotes,
+      required this.dataEvents})
       : super(key: key);
 
   @override
@@ -50,43 +55,27 @@ class _NotesListState extends State<NotesList> {
   final ScrollController _scrollController = ScrollController();
   final SelectionController _selectionController = SelectionController();
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  late final AnimatedListStreamAdapter<Note> animatedListController =
+    AnimatedListStreamAdapter(
+        itemBuilder: buildRowDummy,
+        stateKey: _listKey,
+        stream: widget.viewModel.notesStream
+    );
 
-  @override
-  void initState() {
-    super.initState();
-
-    widget.dataEvents.listen((event) {
-      switch (event.type) {
-        case DataEventType.add:
-          print(event);
-          for (var index in event.indices)
-            _listKey.currentState!.insertItem(index, duration: Duration(milliseconds: 1000));
-          break;
-        case DataEventType.remove:
-          print(event);
-          for (var index in event.indices)
-            _listKey.currentState!.removeItem(index, (context, animation) => FadeTransition(
-              opacity: CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
-              child: SizeTransition(
-                sizeFactor: CurvedAnimation(parent: animation, curve: Interval(0.0, 1.0)),
-                axisAlignment: 0.0,
-                child: buildRow(context, index, animation),
-              ),
-            ),
-                duration: Duration(milliseconds: 1000));
-          break;
-      }
-    });
-  }
-
-  Widget buildRow(BuildContext ctx, int index, Animation<double> animation) =>
+  Widget buildRowIndex(BuildContext ctx, int index, Animation<double> animation) =>
       SelectableItem(
         controller: _selectionController,
         create: (selected) => NoteTile(
-          note: widget.viewModel.notes[index],
+          note: animatedListController.items[index],
           selected: selected,
         ),
         index: index,
+      );
+  
+  Widget buildRowDummy(BuildContext ctx, Note note, Animation<double> animation) =>
+      NoteTile(
+        note: note,
+        selected: false,
       );
 
   void scrollToBottom() {
@@ -120,13 +109,12 @@ class _NotesListState extends State<NotesList> {
                     padding: _selectionController.isEnabled
                         ? const EdgeInsets.all(8.0)
                         : EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top +
-                            8.0,
-                        left: 8.0,
-                        right: 8.0,
-                        bottom: 8.0),
-                    itemBuilder: buildRow,
-                    initialItemCount: widget.viewModel.notes.length,
+                            top: MediaQuery.of(context).padding.top + 8.0,
+                            left: 8.0,
+                            right: 8.0,
+                            bottom: 8.0),
+                    itemBuilder: buildRowIndex,
+                    initialItemCount: animatedListController.items.length,
                     controller: _scrollController,
                   ),
                 ),

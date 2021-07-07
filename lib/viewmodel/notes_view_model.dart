@@ -1,27 +1,37 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:notty/models/note.dart';
 import 'package:objectbox/objectbox.dart';
 
-enum DataEventType { add, remove }
-
-@immutable
-class DataEvent {
-  final DataEventType type;
+abstract class DataEvent {
   final Set<int> indices;
 
-  DataEvent.added(this.indices) : type = DataEventType.add;
-  DataEvent.removed(this.indices) : type = DataEventType.remove;
+  DataEvent(this.indices);
+}
+
+class DataRemovedEvent <T> extends DataEvent {
+  final List<T> snapshot;
+
+  DataRemovedEvent(Set<int> indices, this.snapshot) : super(indices);
 
   @override
   String toString() {
-    return type.toString() + indices.toString();
+    return "DataRemovedEvent$indices";
+  }
+}
+
+class DataAddedEvent extends DataEvent {
+  DataAddedEvent(Set<int> indices) : super(indices);
+
+  @override
+  String toString() {
+    return "DataAddedEvent$indices";
   }
 }
 
 class NotesViewModel {
   final Box<Note> _box;
+  late final Stream<Set<Note>> notesStream;
   
   List<Note> notes = [];
   
@@ -30,6 +40,11 @@ class NotesViewModel {
   Stream<DataEvent> get events => _events.stream;
 
   NotesViewModel(Store store) : _box = Box(store) {
+    notesStream = _box.query()
+        .watch(triggerImmediately: true)
+        .map((query) => query.find())
+        .map((event) => event.toSet());
+
     notes = _box.query().build().find();
 
     _box.query()
@@ -60,10 +75,10 @@ class NotesViewModel {
           }
 
           if (addedNotesIndices.isNotEmpty)
-            _events.add(DataEvent.added(addedNotesIndices));
+            _events.add(DataAddedEvent(addedNotesIndices));
 
           if (removedNotesIndices.isNotEmpty)
-            _events.add(DataEvent.removed(removedNotesIndices));
+            _events.add(DataRemovedEvent(removedNotesIndices, prevNotes));
         });
   }
 
