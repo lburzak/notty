@@ -53,7 +53,7 @@ class _NotesListState extends State<NotesList> {
   final ScrollController _scrollController = ScrollController();
   final SelectionController _selectionController = SelectionController();
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
-  late final AnimatedListStreamAdapter<Note> animatedListController =
+  late final AnimatedListStreamAdapter<Note> _streamAdapter =
     AnimatedListStreamAdapter(
         itemBuilder: buildRowDummy,
         stateKey: _listKey,
@@ -64,7 +64,7 @@ class _NotesListState extends State<NotesList> {
       SelectableItem(
         controller: _selectionController,
         create: (selected) => NoteTile(
-          note: animatedListController.items[index],
+          note: _streamAdapter.items[index],
           selected: selected,
         ),
         index: index,
@@ -112,7 +112,7 @@ class _NotesListState extends State<NotesList> {
                             right: 8.0,
                             bottom: 8.0),
                     itemBuilder: buildRowIndex,
-                    initialItemCount: animatedListController.items.length,
+                    initialItemCount: _streamAdapter.items.length,
                     controller: _scrollController,
                   ),
                 ),
