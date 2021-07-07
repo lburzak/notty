@@ -52,11 +52,9 @@ class NotesList extends StatefulWidget {
 class _NotesListState extends State<NotesList> {
   final ScrollController _scrollController = ScrollController();
   final SelectionController _selectionController = SelectionController();
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
   late final AnimatedListStreamAdapter<Note> _streamAdapter =
     AnimatedListStreamAdapter(
         itemBuilder: buildRowDummy,
-        stateKey: _listKey,
         stream: widget.viewModel.notesStream
     );
 
@@ -103,7 +101,7 @@ class _NotesListState extends State<NotesList> {
                 ),
                 Expanded(
                   child: AnimatedList(
-                    key: _listKey,
+                    key: _streamAdapter.key,
                     padding: _selectionController.isEnabled
                         ? const EdgeInsets.all(8.0)
                         : EdgeInsets.only(

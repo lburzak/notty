@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class AnimatedListStreamAdapter <T> {
-  final GlobalKey<AnimatedListState> stateKey;
+  final GlobalKey<AnimatedListState> key = GlobalKey();
   final Widget Function(
       BuildContext context,
       T model,
@@ -14,7 +14,6 @@ class AnimatedListStreamAdapter <T> {
       {
         Key? key,
         required this.itemBuilder,
-        required this.stateKey,
         required Stream<Set<T>> stream,
         Set<T> initialData = const {}
       }) :
@@ -35,7 +34,7 @@ class AnimatedListStreamAdapter <T> {
         .map(items.indexOf)
         .forEach((index) {
           final item = items.removeAt(index);
-          stateKey.currentState!.removeItem(index, createPlaceholderBuilder(item));
+          key.currentState!.removeItem(index, createPlaceholderBuilder(item));
         }
     );
 
@@ -43,7 +42,7 @@ class AnimatedListStreamAdapter <T> {
         .map(source.indexOf)
         .forEach((index) {
           items.insert(index, source[index]);
-          stateKey.currentState!.insertItem(index);
+          key.currentState!.insertItem(index);
         });
 
     _snapshot = data;
