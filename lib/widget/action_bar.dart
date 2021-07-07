@@ -47,6 +47,7 @@ class _ActionBarState extends State<ActionBar>
         position: Tween<Offset>(begin: Offset(0, -1), end: Offset.zero)
             .animate(_controller),
         child: Material(
+          elevation: 2,
           color: Theme.of(context).colorScheme.primary,
           child: Padding(
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
