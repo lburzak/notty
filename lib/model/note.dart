@@ -13,10 +13,8 @@ class Note {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Note &&
-          runtimeType == other.runtimeType &&
-          content == other.content;
+      other is Note && runtimeType == other.runtimeType && id == other.id;
 
   @override
-  int get hashCode => content.hashCode;
+  int get hashCode => id.hashCode;
 }
