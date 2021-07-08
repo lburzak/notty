@@ -54,7 +54,7 @@ class _NotesPageState extends State<NotesPage> {
               viewModel: _viewModel,
               onDeleteNotes: (selectedIndices) {
                 final selectedNotes =
-                    selectedIndices.map(_viewModel.notes.elementAt)
+                    selectedIndices.map(_viewModel.listedNotes.elementAt)
                     .map((note) => note.id);
 
                 final ids =

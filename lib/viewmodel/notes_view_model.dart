@@ -5,18 +5,24 @@ import 'package:objectbox/objectbox.dart';
 
 class NotesViewModel {
   final Box<Note> _box;
-  late final Stream<Set<Note>> notesStream;
-  
-  List<Note> notes = [];
+  late final Stream<Set<Note>> distinctNotes = watchAllNotes()
+      .map((event) => event.toSet());
+  final List<StreamSubscription> subscriptions = [];
+
+  List<Note> listedNotes = [];
 
   NotesViewModel(Store store) : _box = Box(store) {
-    notesStream = _box.query()
-        .watch(triggerImmediately: true)
-        .map((query) => query.find())
-        .map((event) => event.toSet());
+    final notesSubscription =
+      watchAllNotes().listen((notes) { listedNotes = notes; });
 
-    notes = _box.query().build().find();
+    subscriptions.add(notesSubscription);
   }
+
+  Stream<List<Note>> watchAllNotes() =>
+      _box.query()
+          .watch(triggerImmediately: true)
+          .map((query) => query.find())
+          .asBroadcastStream();
 
   void addNewNote(String content) {
     if (content.isEmpty)
@@ -29,5 +35,10 @@ class NotesViewModel {
   
   void deleteManyNotes(List<int> noteIds) {
     _box.removeMany(noteIds);
+  }
+  
+  void dispose() {
+    subscriptions
+        .forEach((subscription) => subscription.cancel());
   }
 }

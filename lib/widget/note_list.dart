@@ -55,7 +55,7 @@ class _NotesListState extends State<NotesList> {
   late final AnimatedListStreamAdapter<Note> _streamAdapter =
     AnimatedListStreamAdapter(
         itemBuilder: buildRowDummy,
-        stream: widget.viewModel.notesStream,
+        stream: widget.viewModel.distinctNotes,
         onItemsAdded: scrollToBottom
     );
 
