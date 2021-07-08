@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'common/widget/bar_button.dart';
+import 'bar_button.dart';
 
 class ActionBar extends StatefulWidget {
   final bool visible;

@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../objectbox.g.dart';
-import 'action_bar.dart';
+import 'common/widget/action_bar.dart';
 import 'bottom_bar.dart';
 import 'common/controller/selection_controller.dart';
 import 'notes_list/note_list.dart';
