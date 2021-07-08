@@ -97,10 +97,7 @@ class BottomBarButton extends StatelessWidget {
     child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: onPressed,
-        icon: Icon(
-          this.icon,
-          color: Colors.white,
-        )
+        icon: Icon(this.icon)
     ),
   );
 }

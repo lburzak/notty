@@ -31,7 +31,7 @@ class _AppState extends State<App> {
             colorScheme: ColorScheme.light(
               primary: Color.fromARGB(0xff, 0x00, 0x65, 0xdb),
               background: Color.fromARGB(0xff, 0x00, 0x44, 0x94),
-              secondary: Color.fromARGB(0xff, 0x19, 0x74, 0xdf)
+              secondary: Color.fromARGB(0xff, 0x19, 0x74, 0xdf),
             ),
             textTheme: Typography.blackMountainView.copyWith(
                 bodyText2: TextStyle(
@@ -39,6 +39,9 @@ class _AppState extends State<App> {
                 )
             ).apply(
               fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.white
             )
         ),
         debugShowCheckedModeBanner: false
