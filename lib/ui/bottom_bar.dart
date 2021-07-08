@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'common/widget/bar_button.dart';
+
 class BottomBar extends StatefulWidget {
   final void Function(String text)? onNewNote;
 
@@ -57,7 +59,7 @@ class _BottomBarState extends State<BottomBar> {
           children: [
             Align(
               alignment: Alignment.bottomCenter,
-              child: BottomBarButton(
+              child: BarButton(
                   icon: _isExpanded ? Icons.arrow_downward : Icons.arrow_upward,
                   onPressed: _toggleExpanded
               ),
@@ -73,7 +75,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: BottomBarButton(
+              child: BarButton(
                   icon: Icons.send,
                   onPressed: () {
                     _submitNewNote(_inputController.text);
@@ -82,23 +84,6 @@ class _BottomBarState extends State<BottomBar> {
           ],
         ),
       )
-  );
-}
-
-class BottomBarButton extends StatelessWidget {
-  BottomBarButton({Key? key, required this.icon, this.onPressed}) : super(key: key);
-
-  final void Function()? onPressed;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 32,
-    child: IconButton(
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        icon: Icon(this.icon)
-    ),
   );
 }
 

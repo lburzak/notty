@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notty/ui/bottom_bar.dart';
+import 'common/widget/bar_button.dart';
 
 class ActionBar extends StatefulWidget {
   final bool visible;
@@ -60,11 +60,11 @@ class _ActionBarState extends State<ActionBar>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    BottomBarButton(
+                    BarButton(
                       icon: Icons.close,
                       onPressed: widget.onCancel,
                     ),
-                    BottomBarButton(
+                    BarButton(
                       icon: Icons.delete,
                       onPressed: widget.onAction,
                     )
