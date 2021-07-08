@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:notty/controller/selection_controller.dart';
 import 'package:notty/model/note.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
-import 'package:notty/widget/action_bar.dart';
 import 'package:notty/adapter/animated_list_stream_adapter.dart';
 import 'package:provider/provider.dart';
 
@@ -91,32 +90,20 @@ class _NotesListState extends State<NotesList> {
         child: ChangeNotifierProvider(
           create: (context) => widget.selectionController,
           child: Consumer<SelectionController>(
-            builder: (context, selection, child) => Column(
-              children: [
-                ActionBar(
-                  visible: selection.isEnabled,
-                  onCancel: selection.endSelection,
-                  onAction: () {
-                    widget.onDeleteNotes!(selection.selectedIndices);
-                    selection.endSelection();
-                  },
-                ),
-                Expanded(
-                  child: AnimatedList(
-                    key: _streamAdapter.key,
-                    padding: widget.selectionController.isEnabled
-                        ? const EdgeInsets.all(8.0)
-                        : EdgeInsets.only(
-                            top: MediaQuery.of(context).padding.top + 8.0,
-                            left: 8.0,
-                            right: 8.0,
-                            bottom: 8.0),
-                    itemBuilder: buildRowIndex,
-                    initialItemCount: _streamAdapter.items.length,
-                    controller: _scrollController,
-                  ),
-                ),
-              ],
+            builder: (context, selection, child) => Expanded(
+              child: AnimatedList(
+                key: _streamAdapter.key,
+                padding: widget.selectionController.isEnabled
+                    ? const EdgeInsets.all(8.0)
+                    : EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 8.0,
+                        left: 8.0,
+                        right: 8.0,
+                        bottom: 8.0),
+                itemBuilder: buildRowIndex,
+                initialItemCount: _streamAdapter.items.length,
+                controller: _scrollController,
+              ),
             ),
           ),
         ));
