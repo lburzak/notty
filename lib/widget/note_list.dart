@@ -36,13 +36,11 @@ class SelectableItem extends StatelessWidget {
 
 class NotesList extends StatefulWidget {
   final NotesViewModel viewModel;
-  final void Function(Set<int> selectedIndices)? onDeleteNotes;
   final SelectionController selectionController;
 
   const NotesList(
       {Key? key,
       required this.viewModel,
-      this.onDeleteNotes,
       required this.selectionController})
       : super(key: key);
 
