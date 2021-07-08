@@ -51,7 +51,7 @@ class _BottomBarState extends State<BottomBar> {
       duration: Duration(milliseconds: 100),
       height: _isExpanded ? 200 : 50,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -64,7 +64,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                   child: NoteInputBox(
                       controller: _inputController,
                       multiline: _isExpanded,
