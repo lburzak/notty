@@ -40,6 +40,7 @@ class _NotesPageState extends State<NotesPage> {
   @override
   void dispose() {
     _store.dispose();
+    _viewModel.dispose();
     super.dispose();
   }
 
