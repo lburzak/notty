@@ -38,11 +38,13 @@ class SelectableItem extends StatelessWidget {
 class NotesList extends StatefulWidget {
   final NotesViewModel viewModel;
   final void Function(Set<int> selectedIndices)? onDeleteNotes;
+  final SelectionController selectionController;
 
   const NotesList(
       {Key? key,
       required this.viewModel,
-      this.onDeleteNotes})
+      this.onDeleteNotes,
+      required this.selectionController})
       : super(key: key);
 
   @override
@@ -51,7 +53,6 @@ class NotesList extends StatefulWidget {
 
 class _NotesListState extends State<NotesList> {
   final ScrollController _scrollController = ScrollController();
-  final SelectionController _selectionController = SelectionController();
   late final AnimatedListStreamAdapter<Note> _streamAdapter =
     AnimatedListStreamAdapter(
         itemBuilder: buildRowDummy,
@@ -61,7 +62,7 @@ class _NotesListState extends State<NotesList> {
 
   Widget buildRowIndex(BuildContext ctx, int index, Animation<double> animation) =>
       SelectableItem(
-        controller: _selectionController,
+        controller: widget.selectionController,
         create: (selected) => NoteTile(
           note: _streamAdapter.items[index],
           selected: selected,
@@ -88,7 +89,7 @@ class _NotesListState extends State<NotesList> {
         borderRadius: new BorderRadius.only(
             bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
         child: ChangeNotifierProvider(
-          create: (context) => _selectionController,
+          create: (context) => widget.selectionController,
           child: Consumer<SelectionController>(
             builder: (context, selection, child) => Column(
               children: [
@@ -103,7 +104,7 @@ class _NotesListState extends State<NotesList> {
                 Expanded(
                   child: AnimatedList(
                     key: _streamAdapter.key,
-                    padding: _selectionController.isEnabled
+                    padding: widget.selectionController.isEnabled
                         ? const EdgeInsets.all(8.0)
                         : EdgeInsets.only(
                             top: MediaQuery.of(context).padding.top + 8.0,

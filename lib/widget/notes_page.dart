@@ -1,3 +1,4 @@
+import 'package:notty/controller/selection_controller.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +14,7 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
+  final SelectionController _selectionController = SelectionController();
   late final _store;
   late final NotesViewModel _viewModel;
 
@@ -53,6 +55,7 @@ class _NotesPageState extends State<NotesPage> {
         Expanded(
           child: NotesList(
               viewModel: _viewModel,
+              selectionController: _selectionController,
               onDeleteNotes: (selectedIndices) {
                 final selectedNotes =
                     selectedIndices.map(_viewModel.listedNotes.elementAt)
