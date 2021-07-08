@@ -1,4 +1,3 @@
-import 'package:notty/controller/selection_controller.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +7,8 @@ import 'package:provider/provider.dart';
 import '../objectbox.g.dart';
 import 'action_bar.dart';
 import 'bottom_bar.dart';
-import 'note_list.dart';
+import 'common/controller/selection_controller.dart';
+import 'notes_list/note_list.dart';
 
 class NotesPage extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:notty/controller/selection_controller.dart';
+import 'package:notty/ui/common/controller/selection_controller.dart';
 import 'package:provider/provider.dart';
 
 class SelectableItem extends StatelessWidget {

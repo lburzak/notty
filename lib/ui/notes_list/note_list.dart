@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:notty/controller/selection_controller.dart';
 import 'package:notty/model/note.dart';
+import 'package:notty/ui/common/adapter/animated_list_stream_adapter.dart';
+import 'package:notty/ui/common/controller/selection_controller.dart';
 import 'package:notty/viewmodel/notes_view_model.dart';
-import 'package:notty/adapter/animated_list_stream_adapter.dart';
-import 'package:notty/widget/selectable_item.dart';
+import 'package:notty/ui/common/widget/selectable_item.dart';
 import 'package:provider/provider.dart';
 
 import 'note_tile.dart';
