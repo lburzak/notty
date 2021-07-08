@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class SelectionController extends ChangeNotifier {
   final Set<int> _selectedIndices = {};
