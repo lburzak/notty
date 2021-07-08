@@ -7,6 +7,8 @@ class AnimatedListStreamAdapter <T> {
       T model,
       Animation<double> animation
    ) itemBuilder;
+  final void Function()? onItemsAdded;
+
   Set<T> _snapshot;
   List<T> items;
 
@@ -15,6 +17,7 @@ class AnimatedListStreamAdapter <T> {
         Key? key,
         required this.itemBuilder,
         required Stream<Set<T>> stream,
+        this.onItemsAdded,
         Set<T> initialData = const {}
       }) :
         _snapshot = initialData,
@@ -44,6 +47,9 @@ class AnimatedListStreamAdapter <T> {
           items.insert(index, source[index]);
           key.currentState!.insertItem(index);
         });
+
+    if (addedItems.isNotEmpty)
+      onItemsAdded!();
 
     _snapshot = data;
   }
