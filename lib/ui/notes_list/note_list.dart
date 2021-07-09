@@ -35,9 +35,12 @@ class _NotesListState extends State<NotesList> {
   Widget buildRowIndex(BuildContext ctx, int index, Animation<double> animation) =>
       SelectableItem(
         controller: widget.selectionController,
-        create: (selected) => NoteTile(
-          note: _streamAdapter.items[index],
-          selected: selected,
+        create: (selected) => Padding(
+          padding: const EdgeInsets.only(bottom: 4.0),
+          child: NoteTile(
+            note: _streamAdapter.items[index],
+            selected: selected,
+          ),
         ),
         index: index,
       );
