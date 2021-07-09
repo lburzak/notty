@@ -63,20 +63,18 @@ class _NotesListState extends State<NotesList> {
         child: ChangeNotifierProvider(
           create: (context) => widget.selectionController,
           child: Consumer<SelectionController>(
-            builder: (context, selection, child) => Expanded(
-              child: AnimatedList(
-                key: _streamAdapter.key,
-                padding: widget.selectionController.isEnabled
-                    ? const EdgeInsets.all(8.0)
-                    : EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 8.0,
-                        left: 8.0,
-                        right: 8.0,
-                        bottom: 8.0),
-                itemBuilder: buildRowIndex,
-                initialItemCount: _streamAdapter.items.length,
-                controller: _scrollController,
-              ),
+            builder: (context, selection, child) => AnimatedList(
+              key: _streamAdapter.key,
+              padding: widget.selectionController.isEnabled
+                  ? const EdgeInsets.all(8.0)
+                  : EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 8.0,
+                      left: 8.0,
+                      right: 8.0,
+                      bottom: 8.0),
+              itemBuilder: buildRowIndex,
+              initialItemCount: _streamAdapter.items.length,
+              controller: _scrollController,
             ),
           ),
         ));
