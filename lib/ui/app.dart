@@ -26,6 +26,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return _localeInitialized ? MaterialApp(
+        title: 'Notty',
         home: NotesPage(),
         theme: ThemeData(
             colorScheme: ColorScheme.light(

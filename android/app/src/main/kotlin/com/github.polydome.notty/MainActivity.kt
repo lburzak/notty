@@ -1,4 +1,4 @@
-package com.example.app
+package com.github.polydome.notty
 
 import io.flutter.embedding.android.FlutterActivity
 
