@@ -6,12 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'notes_page.dart';
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +36,7 @@ class _AppState extends State<App> {
               fontFamily: GoogleFonts.poppins().fontFamily,
             ),
             iconTheme: IconThemeData(
-              color: Colors.white
+                color: Colors.white
             )
         ),
         debugShowCheckedModeBanner: false
