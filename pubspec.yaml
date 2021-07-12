@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
   google_fonts: ^2.1.0
   intl: ^0.17.0
   objectbox: ^1.0.0
@@ -29,6 +30,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
 flutter_icons:
   android: "launcher_icon"

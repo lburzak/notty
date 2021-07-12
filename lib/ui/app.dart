@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'notes_page.dart';
 
@@ -11,22 +12,20 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  bool _localeInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    initializeDateFormatting('pl_PL').then((value) => {
-      setState(() {
-        _localeInitialized = true;
-      })
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return _localeInitialized ? MaterialApp(
+    return MaterialApp(
         title: 'Notty',
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale.fromSubtags(languageCode: 'en'),
+          const Locale.fromSubtags(languageCode: 'pl')
+        ],
         home: NotesPage(),
         theme: ThemeData(
             colorScheme: ColorScheme.light(
@@ -46,6 +45,6 @@ class _AppState extends State<App> {
             )
         ),
         debugShowCheckedModeBanner: false
-    ) : CircularProgressIndicator();
+    );
   }
 }

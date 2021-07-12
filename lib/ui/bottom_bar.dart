@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'common/widget/bar_button.dart';
 
@@ -110,7 +111,7 @@ class NoteInputBox extends StatelessWidget {
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(8.0),
             isDense: true,
-            hintText: 'Your note...',
+            hintText: AppLocalizations.of(context)!.yourNote,
             hintStyle: Theme.of(context).textTheme.bodyText2!.apply(
                 color: Theme.of(context).textTheme.bodyText2!.color!.withAlpha(85)
             ),
